@@ -1,2 +1,2 @@
-# First-Year-University-Project-Using-C
+# First Year University Project Using C
 A very simple typeing practicing program using c for university project
