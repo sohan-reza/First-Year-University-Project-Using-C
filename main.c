@@ -305,23 +305,84 @@ typedef struct {
 
 void quick_test() {
 	char list[5][5];
+	time_t t1,t2;	
+	srand(time(0));
+	for(int i=0; i<5;i++) {
+		for(int j=0;j<5;j++){
+			int num= (rand()%(90-65+1)+65);
+			list[i][j]=num;
+		}
+	}
+	printf("Press any key to start.\n");
 	
-		
 	for(int i=0; i<5; i++) {
 	
 		printf(" __________________________________\n");
 		printf("|      |      |      |      |      |\n");
-		printf("|  %c   |   %c  |   %c  |   %c  |   %c  |\n", 'A', 'B','C','D','E');
+		printf("|  %c   |   %c  |   %c  |   %c  |   %c  |\n", list[i][0], list[i][1],list[i][2],list[i][3],list[i][4]);
 		printf("|______|______|______|______|______|\n");
 		
 	}
-		
+	
+	
+	int i=0;
+	int a=0;
+	int b=0;
+	
+	int mistake=0;
+	int nchar=0;
+	
+	
+	getch();
+	printf("\n->");
+	t1=time(0);
+	while(i<25){
+		char c=getch();
+		putch(c);
+		//b++;
+		if(c-32 == list[a][b]){
+			b++;nchar++;
+		}else{
+			b++;nchar++;
+			mistake++;
+		}
+		if(b==5){
+			b=0;
+			a++;
+		}
+		i++;
+	}	
+	t2=time(0);
+	
+	float wpm;
+	
+	if(difftime(t2,t1)!=0)
+	   wpm = nchar/difftime(t2,t1);	/*WARNING: time difference may be zero*/
+	else wpm=0;
+	
+	
+	//mistake--;
+	
+	float accuracy;
+	if(nchar!=0)
+		accuracy=(float)100*(nchar-mistake)/nchar;
+   	else accuracy=0.0;
+   	
+   	system("cls");
+   	//printf("%lld\n\n\n", difftime(t2, t1));
+   	printf("Press any key to go back.\n");
+	printf("\n\r [ R E S U L T ]");
+	printf("\n\rDuration: %.2f seconds",difftime(t2,t1));
+        printf("\n\rGross Speed : %.2f Alphabet Per Second",wpm);
+        printf("\n\rAccuracy : %.0f%%",accuracy);
 	
 	getch();
 }
 
 void about() {
-	printf("About this app");
+	printf("About this app:\n");
+	printf("Typeing  practiceing program for first year project.\n");
+	printf("BY: Md. Sohan Reza, Nadeer Fahmi, Md. Rezwan Ahmed\n");
 	getch();
 }
 
