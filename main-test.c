@@ -26,7 +26,7 @@ void hidecursor()
 void welcome_page(void) {
 	system("color 0F");
 	hidecursor();
-
+/*
     printf("\n");
     printf("                 \xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2  \xB2     \xB2   \xB2\xB2\xB2\xB2\xB2\xB2   \xB2\xB2\xB2\xB2\xB2\xB2\xB2   \xB2\xB2\xB2\xB2  \xB2   \xB2     \xB2 \n");
     printf("                     \xB2      \xB2     \xB2   \xB2    \xB2      \xB2      \xB2  \xB2  \xB2   \xB2     \xB2  \n");
@@ -50,7 +50,7 @@ void welcome_page(void) {
     printf("                 \xB2        \xB2   \xB2   \xB2\xB2\xB2\xB2\xB2     \xB2     \xB2\xB2\xB2\xB2\xB2   \xB2   \xB2      \n");
    Sleep(1000);
    system("cls");
-
+*/
 }
 COORD coord = {0,0};
 void gotoxy(int x, int y){
@@ -364,7 +364,7 @@ getch();
 	}
 
 }
-/*
+
 void sta() {
 
 typedef struct {
@@ -375,7 +375,8 @@ typedef struct {
 		float acc;
 		int scr;
 	}user_sta;
-
+int k=2;
+int p=5;
 	user_sta usr;
 
 	FILE *ul = fopen("usr.txt", "r");
@@ -401,11 +402,10 @@ typedef struct {
             printf("ACCURACY ||");
             gotoxy(62,2);
             printf("SCORE ||");
-int k=2;
-int p=5;
+
         printf("\n\n");
-		while(fread(&usr, sizeof(usr),1,fp)) {
-              /*  gotoxy(k,p);
+		while(fread(&usr, sizeof(usr), 1,fp)) {
+                gotoxy(k,p);
             printf("%s", usr.uname);
             gotoxy(k+11,p);
             printf("%s",usr.less);
@@ -419,53 +419,12 @@ int p=5;
             printf("%d ",usr.scr);
             p++;
 
-			printf("%s %s %.2f %d %.2f %d\n", usr.uname, usr.less,usr.dur,usr.wp,usr.acc,usr.scr);
-
+			//printf("         %s       %.2f        %d      %.2f        %d\n", ,usr.dur,usr.wp,usr.acc,usr.scr);
 		}
 
 
 	}
 	}else{printf("FAILED TO OPEN");}
-	}
-	fclose(ul);
-	//printf("%s", user_sta.less);
-	getch();
-}
-*/
-void sta() {
-
-typedef struct {
-		char uname[20];
-		char less[10];
-		float dur;
-		int wp;
-		float acc;
-		int scr;
-	}user_sta;
-
-	user_sta usr;
-
-	FILE *ul = fopen("usr.txt", "r");
-	char lname[10];
-	while(fgets(lname, 10, ul)){
-	lname[strlen(lname)-1]=' ';
-	FILE *fp=fopen(lname,"r");
-	if(fp!=NULL){
-	char text[100];
-	fseek(fp, 0, SEEK_END);
-	long long int size=ftell(fp);
-	fseek(fp, 0, SEEK_SET);
-	if(size!=0) {
-
-		while(fread(&usr, sizeof(usr), 1,fp)) {
-
-
-			printf("%s %s %.2f %d %.2f %d\n", usr.uname, usr.less,usr.dur,usr.wp,usr.acc,usr.scr);
-		}
-
-
-	}
-	}else{printf("Failed to open");}
 	}
 	fclose(ul);
 	//printf("%s", user_sta.less);
