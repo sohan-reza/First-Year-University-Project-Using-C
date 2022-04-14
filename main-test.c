@@ -4,12 +4,14 @@
 #include <dos.h>
 #include <string.h>
 #include <windows.h>
+
 #define fgRed "\e[31m"
 #define fgWhite "\e[37;1m"
 #define fgBlack "\e[30m"
 #define fgGreen "\e[32;1m"
 #define fgYellow "\e[33m"
 #define bgbWhite "\e[47;1m"
+
 void txtColor(char a[]){
 printf("%s",a);
 }
@@ -52,6 +54,7 @@ void welcome_page(void) {
    system("cls");
 */
 }
+
 COORD coord = {0,0};
 void gotoxy(int x, int y){
     coord.X = x; coord.Y = y; /// X and Y coordinates
@@ -59,12 +62,12 @@ void gotoxy(int x, int y){
 }
 
 void intro()
-{
+{/*
     printf("            ======================================================================================  \n");
     printf("            =    |||||||||  |   |  |||||  |||||  ||| |  |   |    |||||||   |||||  | |   |||||    =  \n");
     printf("            =        |      |||||  |||||    |    | | |  |||||       |      |||     |      |      =  \n");
     printf("            =        |        |    |      |||||  | |||    |         |      |||||  | |     |      =  \n");
-    printf("            ======================================================================================  \n");
+    printf("            ======================================================================================  \n");*/
 }
 
 int show_menu(void) {
@@ -158,8 +161,7 @@ void start_session(char text[], int len, char name[], char doc[]) {
 	while(i<len) {
 
 		char c=getch();
-		if(c==8)
-        {
+		if(c==8){
             continue;
         }
 		if(flag==1)
@@ -229,12 +231,42 @@ void start_session(char text[], int len, char name[], char doc[]) {
         printf("\n\r\t\t\t\t||SCORE           :   %.0f",accuracy*wpm);
         printf("\n\r\t\t\t\t=============================");
         printf("\n\n\n\t\t\t\tPRESS ANY KEY TO CONTINUE\n");
-        FILE *fuser=fopen(name, "ab");
-
+        
+        user_sta old;
+        FILE *fp_old = fopen(name, "rb");
+        if(fp_old != NULL){
+       		 fread(&old, sizeof(old), 1, fp_old);
+       		// printf("         %s   %s    %.2f        %d      %.2f        %d\n",old.uname, old.less ,old.dur,old.wp,old.acc,old.scr);
+       		 
+       	}
+        fclose(fp_old);
+        
+       // if(strcmp(new.less,old.less) == 0) {
+        	if(new.dur < old.dur) {
+        		if(new.acc >= old.acc) {
+        			printf("Congratulation! You are makeing progress!\n");
+        		}else{
+        			printf("Congratulation! You are makeing progress! but accurecy doesn't incress\n");
+        		}
+        		
+        		FILE *fuser=fopen(name, "wb");
+      			 //fseek(fuser,0,SEEK_END);
+   			fwrite(&new,sizeof(user_sta),1,fuser);	/*write current seesion*/
+   			fclose(fuser);
+        		
+        	}else{
+        		printf("You have to practice more!");	
+        	}
+       //	}else{
+       	//	if()	
+       //	}
+        
+        /*       
+        FILE *fuser=fopen(name, "wb");
         fseek(fuser,0,SEEK_END);
    	fwrite(&new,sizeof(user_sta),1,fuser);	/*write current seesion*/
-   	fclose(fuser);
-
+   	//fclose(fuser);
+		
 	//getch();
 }
 
@@ -247,7 +279,19 @@ void start() {
 	intro();
 	gotoxy(30,10);
 	printf("USERNAME: ");
-	scanf("%s", name);
+	//scanf("%s", name);
+	for(int i=0; i<15; i++) {
+		char ch=getch();
+		int c= ch;
+		if(c==13){
+			break;
+		}
+		if(c==27){return;}
+		printf("%d", ch);
+		name[i]=ch;	
+	}
+	//printf("name: %d\n", strlen(name));
+	
 		char buffer[15];
 			while(fgets(buffer, 15, fp)){
 				buffer[strlen(buffer)-1]='\0';
@@ -282,7 +326,6 @@ void start() {
 				gotoxy(30,20);
 				printf("ENTER CHOICE: ");
 				scanf("%d", &sel);
-
 				char text[1000];
 				char file_name[20];
 				buffer[sel-1][strlen(buffer[sel-1])-1]='\0';
@@ -328,7 +371,17 @@ void reg() {
 	}else{
         gotoxy(25,10);
 		printf("ENTER YOUR USERNAME ");
-		scanf("%s", name);
+		//scanf("%s", name);
+		for(int i=0; i<15; i++) {
+		char ch=getch();
+		int c= ch;
+		if(c==13){
+			break;
+		}
+		if(c==27){return;}
+		printf("%d", ch);
+		name[i]=ch;	
+		}
 		char buffer[15];
 			while(fgets(buffer, 15, fp)){
 				buffer[strlen(buffer)-1]='\0';
@@ -461,7 +514,8 @@ void quick_test() {
 	int nchar=0;
 
 
-	getch();
+	int ch = getch();
+	if(ch==27){return;}
 	printf("\n->");
 	t1=time(0);
 	while(i<25){
