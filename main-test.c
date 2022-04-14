@@ -242,8 +242,8 @@ void start_session(char text[], int len, char name[], char doc[]) {
         fclose(fp_old);
         
        // if(strcmp(new.less,old.less) == 0) {
-        	if(new.dur < old.dur) {
-        		if(new.acc >= old.acc) {
+        	if(new.wp > old.wp) {
+        		if(new.acc >= old.acc || new.acc==100.0) {
         			printf("Congratulation! You are makeing progress!\n");
         		}else{
         			printf("Congratulation! You are makeing progress! but accurecy doesn't incress\n");
@@ -430,8 +430,8 @@ typedef struct {
 	}user_sta;
 int k=2;
 int p=5;
-	user_sta usr;
-
+	user_sta usr, usr_array[100];
+	int i=0;
 	FILE *ul = fopen("usr.txt", "r");
 	char lname[10];
 	while(fgets(lname, 10, ul)){
@@ -457,8 +457,13 @@ int p=5;
             printf("SCORE ||");
 
         printf("\n\n");
+        	
 		while(fread(&usr, sizeof(usr), 1,fp)) {
-                gotoxy(k,p);
+		//memcpy (usr_array[i], usr, sizeof(usr_array));
+		usr_array[i]=usr;
+		i++;
+		//printf("%s", usr.uname);
+               /* 
             printf("%s", usr.uname);
             gotoxy(k+11,p);
             printf("%s",usr.less);
@@ -470,7 +475,7 @@ int p=5;
             printf("%.2f ",usr.acc);
             gotoxy(k+61,p);
             printf("%d ",usr.scr);
-            p++;
+            p++;*/
 
 			//printf("         %s       %.2f        %d      %.2f        %d\n", ,usr.dur,usr.wp,usr.acc,usr.scr);
 		}
@@ -479,7 +484,44 @@ int p=5;
 	}
 	}else{printf("FAILED TO OPEN");}
 	}
+	
 	fclose(ul);
+	//printf("\n\n\n\n\n");
+	
+	//bubble sort
+	for(int a=0; a<i; a++) {
+		for(int b=0; b<i-1; b++) {
+			if(usr_array[b+1].scr > usr_array[b].scr) {
+				user_sta temp = usr_array[b];
+				usr_array[b] = usr_array[b+1];
+				usr_array[b+1]=temp;
+			}
+		}
+	}
+	
+	
+	for(int j=0; j<i; j++){
+		gotoxy(k,p);
+		printf("%s", usr_array[j].uname);
+		gotoxy(k+11,p);
+                printf("%s",usr_array[j].less);
+                gotoxy(k+25,p);
+                printf("%.2f ",usr_array[j].dur);
+                gotoxy(k+40,p);
+                printf("%d ",usr_array[j].wp);
+                gotoxy(k+51,p);
+                printf("%.2f ",usr_array[j].acc);
+                gotoxy(k+61,p);
+                printf("%d ",usr_array[j].scr);
+                p++;
+	}
+	/*printf("%s\n", usr_array[1].uname);
+	printf("%s\n", usr_array[2].uname);
+	printf("%s\n", usr_array[3].uname);
+	printf("%s\n", usr_array[4].uname);*/
+	
+	//printf("%d\n", i);
+	
 	//printf("%s", user_sta.less);
 	getch();
 }
