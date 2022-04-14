@@ -244,9 +244,13 @@ void start_session(char text[], int len, char name[], char doc[]) {
        // if(strcmp(new.less,old.less) == 0) {
         	if(new.wp > old.wp) {
         		if(new.acc >= old.acc || new.acc==100.0) {
+        			txtColor(fgGreen);
         			printf("Congratulation! You are makeing progress!\n");
+        			txtColor(fgWhite);
         		}else{
+        			txtColor(fgGreen);
         			printf("Congratulation! You are makeing progress! but accurecy doesn't incress\n");
+        			txtColor(fgWhite);
         		}
         		
         		FILE *fuser=fopen(name, "wb");
@@ -255,7 +259,9 @@ void start_session(char text[], int len, char name[], char doc[]) {
    			fclose(fuser);
         		
         	}else{
+        		txtColor(fgRed);
         		printf("You have to practice more!");	
+        		txtColor(fgWhite);
         	}
        //	}else{
        	//	if()	
