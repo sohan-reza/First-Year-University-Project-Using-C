@@ -385,7 +385,7 @@ void reg() {
 			break;
 		}
 		if(c==27){return;}
-		printf("%d", ch);
+		printf("%c", ch);
 		name[i]=ch;	
 		}
 		char buffer[15];
@@ -507,6 +507,7 @@ int p=5;
 	
 	
 	for(int j=0; j<i; j++){
+		if(j==0){txtColor(fgGreen);}
 		gotoxy(k,p);
 		printf("%s", usr_array[j].uname);
 		gotoxy(k+11,p);
@@ -520,6 +521,7 @@ int p=5;
                 gotoxy(k+61,p);
                 printf("%d ",usr_array[j].scr);
                 p++;
+                if(j==0){txtColor(fgWhite);}
 	}
 	/*printf("%s\n", usr_array[1].uname);
 	printf("%s\n", usr_array[2].uname);
