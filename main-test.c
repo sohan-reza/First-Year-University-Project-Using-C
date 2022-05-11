@@ -179,11 +179,11 @@ void start_session(char text[], int len, char name[], char doc[]) {
 			if(c==32){nword++;}
 
 		}else{
-			nchar++;
-			txtColor(fgRed);
-			putch(c);
+			//nchar++;
+			//txtColor(fgRed);
+			//putch(c);
 			flag=1;
-            txtColor(fgWhite);
+            //txtColor(fgWhite);
 			mistake++;
 
 		}
@@ -293,7 +293,7 @@ void start() {
 			break;
 		}
 		if(c==27){return;}
-		printf("%d", ch);
+		printf("%c", ch);
 		name[i]=ch;	
 	}
 	//printf("name: %d\n", strlen(name));
