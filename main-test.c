@@ -28,7 +28,7 @@ void hidecursor()
 void welcome_page(void) {
 	system("color 0F");
 	hidecursor();
-/*
+
     printf("\n");
     printf("                 \xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2  \xB2     \xB2   \xB2\xB2\xB2\xB2\xB2\xB2   \xB2\xB2\xB2\xB2\xB2\xB2\xB2   \xB2\xB2\xB2\xB2  \xB2   \xB2     \xB2 \n");
     printf("                     \xB2      \xB2     \xB2   \xB2    \xB2      \xB2      \xB2  \xB2  \xB2   \xB2     \xB2  \n");
@@ -52,7 +52,7 @@ void welcome_page(void) {
     printf("                 \xB2        \xB2   \xB2   \xB2\xB2\xB2\xB2\xB2     \xB2     \xB2\xB2\xB2\xB2\xB2   \xB2   \xB2      \n");
    Sleep(1000);
    system("cls");
-*/
+
 }
 
 COORD coord = {0,0};
@@ -62,12 +62,12 @@ void gotoxy(int x, int y){
 }
 
 void intro()
-{/*
+{
     printf("            ======================================================================================  \n");
     printf("            =    |||||||||  |   |  |||||  |||||  ||| |  |   |    |||||||   |||||  | |   |||||    =  \n");
     printf("            =        |      |||||  |||||    |    | | |  |||||       |      |||     |      |      =  \n");
     printf("            =        |        |    |      |||||  | |||    |         |      |||||  | |     |      =  \n");
-    printf("            ======================================================================================  \n");*/
+    printf("            ======================================================================================  \n");
 }
 
 int show_menu(void) {
@@ -142,13 +142,26 @@ int show_menu(void) {
 void start_session(char text[], int len, char name[], char doc[]) {
 
 
-	len--;
+	//len--;
 	system("cls");
 	time_t t1,t2;	   struct tm *area;
 	int mistake, wpm,flag=0;
 	float accuracy;
 	gotoxy(20,10);
-	printf("        %s", text);
+	//int length= strlen(text);
+	//printf("%d %d\n", len, length);
+	//printf("        ");
+	//printf("%d\n", len);
+	int ctr=0;
+	for(int i=0; i<len; i++){
+        ctr++;
+        printf("%c", text[i]);
+        if(ctr%99==0){
+
+            printf("\n\t\t   ");
+            ctr=0;
+        }
+	}
 	t1=time(0);
 	int i=0;
 	int nchar=0;
@@ -157,19 +170,32 @@ void start_session(char text[], int len, char name[], char doc[]) {
 
 	int a;
 	char b;
-	printf("\n                         -> ");
+	printf("\n\n                 -> ");
+
+
 	while(i<len) {
 
 		char c=getch();
 		if(c==8){
             continue;
         }
-		if(flag==1)
-		{
-		    printf("\b \b");
+        if(c==27){
+
+            return;
+        }
+
+
+		if(nchar>0 && nchar%99==0){
+            printf("\n");
+            printf("                   ");
 		}
 
 		if(c==text[i]) {
+                if(flag==1)
+                {
+
+                    printf("\b");
+                }
 			i++;
 			flag=0;
 			txtColor(fgGreen);
@@ -180,10 +206,13 @@ void start_session(char text[], int len, char name[], char doc[]) {
 
 		}else{
 			//nchar++;
-			//txtColor(fgRed);
-			//putch(c);
+			txtColor(fgRed);
+			if(flag){
+                printf("\b");
+			}
+			putch(c);
 			flag=1;
-            //txtColor(fgWhite);
+            txtColor(fgWhite);
 			mistake++;
 
 		}
@@ -231,49 +260,49 @@ void start_session(char text[], int len, char name[], char doc[]) {
         printf("\n\r\t\t\t\t||SCORE           :   %.0f",accuracy*wpm);
         printf("\n\r\t\t\t\t=============================");
         printf("\n\n\n\t\t\t\tPRESS ANY KEY TO CONTINUE\n");
-        
+
         user_sta old;
         FILE *fp_old = fopen(name, "rb");
         if(fp_old != NULL){
        		 fread(&old, sizeof(old), 1, fp_old);
        		// printf("         %s   %s    %.2f        %d      %.2f        %d\n",old.uname, old.less ,old.dur,old.wp,old.acc,old.scr);
-       		 
+
        	}
         fclose(fp_old);
-        
+
        // if(strcmp(new.less,old.less) == 0) {
         	if(new.wp > old.wp) {
         		if(new.acc >= old.acc || new.acc==100.0) {
         			txtColor(fgGreen);
-        			printf("Congratulation! You are makeing progress!\n");
+        			printf("\t\t\t\tCongratulation! You are makeing progress!\n");
         			txtColor(fgWhite);
         		}else{
         			txtColor(fgGreen);
-        			printf("Congratulation! You are makeing progress! but accurecy doesn't incress\n");
+        			printf("\t\t\t\tCongratulation! You are makeing progress! but accurecy doesn't incress\n");
         			txtColor(fgWhite);
         		}
-        		
+
         		FILE *fuser=fopen(name, "wb");
       			 //fseek(fuser,0,SEEK_END);
    			fwrite(&new,sizeof(user_sta),1,fuser);	/*write current seesion*/
    			fclose(fuser);
-        		
+
         	}else{
         		txtColor(fgRed);
-        		printf("You have to practice more!");	
+        		printf("\t\t\t\tYou have to practice more!");
         		txtColor(fgWhite);
         	}
        //	}else{
-       	//	if()	
+       	//	if()
        //	}
-        
-        /*       
+
+        /*
         FILE *fuser=fopen(name, "wb");
         fseek(fuser,0,SEEK_END);
    	fwrite(&new,sizeof(user_sta),1,fuser);	/*write current seesion*/
    	//fclose(fuser);
-		
-	//getch();
+
+	getch();
 }
 
 
@@ -294,10 +323,10 @@ void start() {
 		}
 		if(c==27){return;}
 		printf("%c", ch);
-		name[i]=ch;	
+		name[i]=ch;
 	}
 	//printf("name: %d\n", strlen(name));
-	
+
 		char buffer[15];
 			while(fgets(buffer, 15, fp)){
 				buffer[strlen(buffer)-1]='\0';
@@ -313,6 +342,9 @@ void start() {
                 printf("USER FOUND");
                 Sleep(1000);
                 txtColor(fgWhite);
+
+                ret:
+
                 system("cls");
                 intro();
                 gotoxy(30,10);
@@ -331,7 +363,13 @@ void start() {
 				int sel;
 				gotoxy(30,20);
 				printf("ENTER CHOICE: ");
-				scanf("%d", &sel);
+
+                char st=getch();
+                if(st==27){return;}
+                sel = st-'0';
+                putchar(st);
+                //sleep(20);
+
 				char text[1000];
 				char file_name[20];
 				buffer[sel-1][strlen(buffer[sel-1])-1]='\0';
@@ -354,6 +392,8 @@ void start() {
 					fclose(r);
 
 					start_session(text, (int)size, name, buffer[sel-1]);
+
+					goto ret;
 				}
 
 			}else{
@@ -376,7 +416,7 @@ void reg() {
 		printf("FAILED TO OPEN usrlist.\n");
 	}else{
         gotoxy(25,10);
-		printf("ENTER YOUR USERNAME ");
+		printf("ENTER YOUR USERNAME: ");
 		//scanf("%s", name);
 		for(int i=0; i<15; i++) {
 		char ch=getch();
@@ -386,7 +426,7 @@ void reg() {
 		}
 		if(c==27){return;}
 		printf("%c", ch);
-		name[i]=ch;	
+		name[i]=ch;
 		}
 		char buffer[15];
 			while(fgets(buffer, 15, fp)){
@@ -416,8 +456,9 @@ void reg() {
 					getch();
 					return;
 				}else{
-					printf("FAILED TO REGISTER");
+					printf("\nFAILED TO REGISTER");
 				}
+				fclose(fp2);
 getch();
 
 	}
@@ -439,9 +480,11 @@ int p=5;
 	user_sta usr, usr_array[100];
 	int i=0;
 	FILE *ul = fopen("usr.txt", "r");
-	char lname[10];
-	while(fgets(lname, 10, ul)){
+	char lname[15];
+	while(fgets(lname, 15, ul)){
+
 	lname[strlen(lname)-1]=' ';
+
 	FILE *fp=fopen(lname,"r");
 	if(fp!=NULL){
 	char text[100];
@@ -463,13 +506,13 @@ int p=5;
             printf("SCORE ||");
 
         printf("\n\n");
-        	
+
 		while(fread(&usr, sizeof(usr), 1,fp)) {
 		//memcpy (usr_array[i], usr, sizeof(usr_array));
 		usr_array[i]=usr;
 		i++;
 		//printf("%s", usr.uname);
-               /* 
+               /*
             printf("%s", usr.uname);
             gotoxy(k+11,p);
             printf("%s",usr.less);
@@ -490,10 +533,10 @@ int p=5;
 	}
 	}else{printf("FAILED TO OPEN");}
 	}
-	
+
 	fclose(ul);
 	//printf("\n\n\n\n\n");
-	
+
 	//bubble sort
 	for(int a=0; a<i; a++) {
 		for(int b=0; b<i-1; b++) {
@@ -504,8 +547,8 @@ int p=5;
 			}
 		}
 	}
-	
-	
+
+
 	for(int j=0; j<i; j++){
 		if(j==0){txtColor(fgGreen);}
 		gotoxy(k,p);
@@ -527,9 +570,9 @@ int p=5;
 	printf("%s\n", usr_array[2].uname);
 	printf("%s\n", usr_array[3].uname);
 	printf("%s\n", usr_array[4].uname);*/
-	
+
 	//printf("%d\n", i);
-	
+
 	//printf("%s", user_sta.less);
 	getch();
 }
@@ -544,10 +587,12 @@ void quick_test() {
 			list[i][j]=num;
 		}
 	}
+
+
 	printf("PRESS ANY KEY TO START\n");
 
-	for(int i=0; i<5; i++) {
 
+	for(int i=0; i<5; i++) {
 		printf(" __________________________________\n");
 		printf("|      |      |      |      |      |\n");
 		printf("|  %c   |   %c  |   %c  |   %c  |   %c  |\n", list[i][0], list[i][1],list[i][2],list[i][3],list[i][4]);
@@ -574,6 +619,7 @@ void quick_test() {
         {
             continue;
         }
+        if(c==27){return;}
         if(flag==1)
         {   i--;
             printf("\b \b");
@@ -583,7 +629,8 @@ void quick_test() {
 			b++;nchar++;
 			txtColor(fgGreen);
 			flag=0;
-		putch(c);
+			//c = to_upper(c);
+            putch(c);
 		 txtColor(fgWhite);
 		}else{
 		    txtColor(fgRed);
@@ -621,11 +668,13 @@ void quick_test() {
         printf("\n\n\n\r\t\t\t\t          RESULT");
         printf("\n\r\t\t\t\t=============================");
         printf("\n\r\t\t\t\t||DURATION        :   %.2f seconds",difftime(t2,t1));
-        printf("\n\r\t\t\t\t||GROSS SPEED     :   %.2f WPM",wpm);
+        printf("\n\r\t\t\t\t||GROSS SPEED     :   %.2f APS",wpm);
         printf("\n\r\t\t\t\t||ACCURACY        :   %.0f%%",accuracy);
         printf("\n\r\t\t\t\t=============================");
         printf("\n\n\n\t\t\t\tPRESS ANY KEY TO CONTINUE\n");
 	getch();
+
+	//ok
 }
 
 void about() {
@@ -635,8 +684,10 @@ void about() {
 	gotoxy(40,11);
 	printf("SOHAN REZA");
 	gotoxy(40,12);
-	printf("NADEER FAHMI");
+	printf("RAIHAN SHEIKH JOY");
 	gotoxy(40,13);
+	printf("NADEER FAHMI");
+	gotoxy(40,14);
 	printf("MD.REZWAN AHMED");
 	getch();
 }
@@ -668,6 +719,15 @@ void go(int s) {
 	};
 }
 
+void end_message() {
+        system("cls");
+        intro();
+
+        printf("\n\n\n\n\n\t\t\tTHANK YOU FOR USING THIS APPLICATION");Sleep(1000);
+        printf("\n\t\t\tMAY ALLAH BLESS YOU");Sleep(500);
+        printf("\n\t\t\tALLAH HAFFEZ");Sleep(500);
+        Sleep(1000);
+}
 
 int main(void) {
    welcome_page();
@@ -675,13 +735,7 @@ int main(void) {
 while(1){
     int select=show_menu();
    if(select==27) {
-       system("cls");
-        intro();
-
-        printf("\n\n\n\n\n\t\t\tTHANK YOU FOR USING THIS APPLICATION");Sleep(1000);
-        printf("\n\t\t\tMAY ALLAH BLESS YOU");Sleep(1000);
-        printf("\n\t\t\tALLAH HAFFEZ");Sleep(1000);
-        Sleep(3000);
+      end_message();
    	return 0;
    }
     system("cls");
